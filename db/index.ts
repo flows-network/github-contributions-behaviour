@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import Account from '../models/account.model';
-import Behaviour from '../models/behaviour.model';
+import Behavior from '../models/behavior.model';
 import {logService} from "../services";
 
 mongoose.connect(process.env.MONGODB_URI).then(e =>
@@ -12,5 +12,5 @@ mongoose.Promise = global.Promise;
 
 export default {
     Account,
-    Behaviour
+    Behavior
 };

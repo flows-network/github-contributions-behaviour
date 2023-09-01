@@ -8,6 +8,7 @@ const config: Config = {
     theme: {
         extend: {
             colors: {
+                'main': '#9955FF',
                 'gray-999': '#999999',
                 'input': '#464648',
                 'line': 'rgba(255,255,255,0.4)',

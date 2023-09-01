@@ -51,20 +51,6 @@ export default function UserTab(props) {
                     <li className="px-6 text-sm select-none py-3">{props.userData.username}</li>
                     <div className="h-px bg-gray-300"/>
                     <li className="hover:bg-main hover:text-white text-xs">
-                        <a className="block px-6 py-2" href="/flows">My Flows</a>
-                    </li>
-                    <li className="hover:bg-main hover:text-white text-xs">
-                        <a className="block px-6 py-2" href="/integrations">Integrations</a>
-                    </li>
-                    {/*<li className="hover:bg-main hover:text-white text-xs">*/}
-                    {/*    <a className="block px-6 py-2" href={`/template/${props.userData.username}`}>Templates I Created</a>*/}
-                    {/*</li>*/}
-                    <li className="hover:bg-main hover:text-white text-xs sm:hidden block">
-                        <a target="_blank" className="block px-6 py-2"
-                           href="https://github.com/flows-network/awesome-flow-functions">Examples</a>
-                    </li>
-                    <div className="h-px bg-gray-300"/>
-                    <li className="hover:bg-main hover:text-white text-xs">
                         <a className="block px-6 py-2" href="/api/logout">Sign Out</a>
                     </li>
                 </ul>

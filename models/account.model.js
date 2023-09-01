@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import Role from './Role';
 
 const Schema = mongoose.Schema;
 
@@ -18,4 +17,4 @@ schema.set('toJSON', {
 });
 
 // prevent model overwrite during hot module replacement
-export default mongoose.models['Account'] || mongoose.model('Account', schema, 'gcb');
+export default mongoose.models['Account'] || mongoose.model('Account', schema);

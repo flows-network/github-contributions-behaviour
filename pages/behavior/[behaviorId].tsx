@@ -1,22 +1,13 @@
-import Header from "../components/Header"
-import {behaviorService} from "../services/index"
+import Header from "@/components/Header"
+import {behaviorService} from "@/services/index"
 import Button from "@/components/Button";
 import React, {useEffect, useRef, useState} from 'react';
-import {TwitterShareButton} from "react-share";
-import server from "../helpers/server";
-import {message} from 'antd';
+import {useRouter} from "next/router.js";
 
-export async function getServerSideProps(context) {
-    const user = await server.serverSideLogin(context)
-    if (user) {
-        return {props: {user}}
-    }
-    return {props: {}}
-}
+export default function Home() {
 
-export default function Home({user}) {
-
-    const buttonElement = useRef()
+    const router = useRouter()
+    const scrollRef = useRef()
 
     const [id, setId] = useState("")
     const [owner, setOwner] = useState("")
@@ -24,12 +15,9 @@ export default function Home({user}) {
     const [dots, setDots] = useState("")
     const [progress, setProgress] = useState<number>(0);
     const [pageData, setPageData] = useState<string>("");
-    const [behaviorId, setBehaviorId] = useState<string>("");
     const [beforeText, setBeforeText] = useState<string>("");
     const [afterText, setAfterText] = useState<string>("");
     const [thisWeek, setThisWeek] = useState<string>("");
-
-    const [messageApi, contextHolder] = message.useMessage();
 
     // 在这里定义一个异步函数，用于请求 URL 并更新进度
     const fetchData = async () => {
@@ -52,7 +40,6 @@ export default function Home({user}) {
             const response = await behaviorService.saveBehavior(owner, repo, id);
             clearInterval(timer)
             setPageData(response.data)
-            setBehaviorId(response.behaviorId)
             const splitIndex = response.data.indexOf("- ");
             const beforeText = response.data.slice(0, splitIndex);
             setBeforeText(beforeText)
@@ -111,31 +98,34 @@ export default function Home({user}) {
         setThisWeek(weekDay)
     }, [])
 
-    const copy = () => {
-        const textarea = document.createElement('textarea');
-        textarea.textContent = `${process.env.NEXT_PUBLIC_PLATFORM_API_PREFIX}/behavior/${behaviorId}`;
-        textarea.style.position = 'fixed';  // Prevent scrolling to bottom of page in Microsoft Edge.
-        document.body.appendChild(textarea);
-        textarea.select();
-        try {
-            document.execCommand('copy');  // Security exception may be thrown by some browsers.
-            // setCopyState(true)
-            messageApi.success("Copied successfully!")
-            setTimeout(() => {
-                // setCopyState(false)
-            }, 3000)
-        } finally {
-            document.body.removeChild(textarea);
+    useEffect(() => {
+        if (router.query.behaviorId) {
+            behaviorService.getBehavior(router.query.behaviorId).then(data => {
+                const behaviorData = data.data
+                setPageData(behaviorData.data)
+                setId(behaviorData.githubId)
+                setOwner(behaviorData.owner)
+                setRepo(behaviorData.repo)
+                const splitIndex = behaviorData.data.indexOf("- ");
+                const beforeText = behaviorData.data.slice(0, splitIndex);
+                setBeforeText(beforeText)
+                const afterText = behaviorData.data.slice(splitIndex);
+                setAfterText(afterText)
+                setProgress(100)
+                console.log(scrollRef.current)
+                if (scrollRef.current) {
+                    scrollRef.current.scrollIntoView({behavior: 'smooth'});
+                }
+            })
         }
-    }
+    }, [router.query.behaviorId])
 
     return (
         <div className="relative overflow-x-hidden">
-            {contextHolder}
             <img className="absolute w-full" src="/Earth.png" alt="bg-Earth"/>
             <img style={{height: "45.7vw"}} className="absolute" src="/Light.png" alt="bg-Light"/>
             <div className="relative z-50">
-                <Header userData={user}/>
+                <Header/>
                 <div style={{lineHeight: "4.5rem", fontFamily: 'Oxanium, sans-serif'}}
                      className="font-medium mt-52 text-6xl text-center">
                     A GPT4 powered GitHub<br/>
@@ -198,7 +188,7 @@ export default function Home({user}) {
                     ChatGPT analyze your contribution
                 </div>
                 <div className="flex justify-center">
-                    <div style={progress === 0 && !pageData ? {width: "76vw"} : {width: "56.2vh", height: "100vh"}}
+                    <div ref={scrollRef} style={progress === 0 && !pageData ? {width: "76vw"} : {width: "56.2vh", height: "100vh"}}
                          className={"bg-grayBg border border-white mt-10 rounded-2xl " + (progress === 0 && !pageData ? "py-16 px-40" : "")}>
                         {
                             (pageData && progress >= 100) ? <div className="relative">
@@ -216,14 +206,12 @@ export default function Home({user}) {
                                         width: "47.2vh",
                                         textShadow: " 0px 4px 2px #9955FF"
                                     }}>{`${id}'s contribution to ${owner}/${repo} project`}</div>
-                                    <div></div>
-                                    <Button text="copy" onClick={copy}/>
                                     <div className="relative p-10 mt-14 whitespace-pre-line text-3xl break-normal"
                                          style={{
                                              borderRadius: "2.5rem",
                                              border: "1px solid rgb(107,57,173)",
-                                             height: "25vh",
                                              background: "rgba(153, 85, 255, 0.2)",
+                                             height: "25vh",
                                              hyphens: "auto",
                                              wordWrap: "break-word",
                                              width: "47.2vh"
@@ -252,26 +240,17 @@ export default function Home({user}) {
                                         <div className="overflow-auto h-full"
                                              dangerouslySetInnerHTML={{__html: afterText}}/>
                                     </div>
-                                    <div className="flex mt-12 w-full justify-around">
+                                    <div className="flex mt-12 w-full justify-center">
                                         <Button onClick={() => {
                                             setProgress(0)
                                             setPageData("")
                                             setBeforeText("")
                                             setAfterText("")
-                                        }} className="font-bold bg-grayBg rounded-2xl py-5 px-8 text-3xl" text="Try again"
+                                            setId("")
+                                            setRepo("")
+                                            setOwner("")
+                                        }} className="bg-grayBg rounded-2xl py-5 px-8 text-3xl" text="Make you own"
                                                 type="normal"/>
-                                        <Button onClick={async () => {
-                                            await buttonElement.current.click();
-                                        }} className="font-bold bg-grayBg rounded-2xl py-5 px-8 text-3xl" text="Share to twitter"
-                                                type="explore"/>
-                                        <div className="hidden">
-                                            <TwitterShareButton ref={buttonElement} url="flows.network"
-                                                                title={`Excited to share my recent GitHub contributions! Check out my commit summary at ${process.env.NEXT_PUBLIC_PLATFORM_API_PREFIX}/behavior/${behaviorId}. Celebrating open source! 🎉`}
-                                                                via="flows_network"
-                                                                hashtags={["automation", "ChatGPT", "GitHub", owner, repo]}>
-                                                Share to twitter
-                                            </TwitterShareButton>
-                                        </div>
                                     </div>
                                 </div>
                                 <img style={{width: "56.2vh"}} className="absolute rounded-2xl"
