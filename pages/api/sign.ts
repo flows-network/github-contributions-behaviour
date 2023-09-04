@@ -1,7 +1,41 @@
 import gh from '../../helpers/gh';
 import {default as db} from '../../db';
+import { NextApiRequest, NextApiResponse } from 'next';
+import session from 'express-session';
 
-export default async function signin(req: Request, res: Response) {
+type User = {
+    github_id?: string;
+    id?: string;
+
+    github_name?: string;
+    name?: string;
+
+    login?: string;
+    username?: string;
+
+    avatar_url?: string;
+    avatar?: string;
+
+    html_url?: string;
+    github_url?: string;
+
+    email?: string;
+};
+
+interface CustomSession extends session.Session {
+    user?: string,
+    access_token?: string,
+    gh_refresh_token?: string,
+    gh_refresh_token_expires_in?: string,
+}
+
+declare module 'next' {
+    interface NextApiRequest {
+        session: CustomSession;
+    }
+}
+
+export default async function signin(req: NextApiRequest, res: NextApiResponse) {
     if (!req.query.code) {
         res.status(400).send('No code supplied');
         return;
@@ -15,7 +49,7 @@ export default async function signin(req: Request, res: Response) {
             access_token expire after 8 hours, you can use refresh_token to renewing a new access_token
             refresh_token are valid for 6 months
          */
-        let u
+        let u: User | undefined;
         try {
             u = await gh.getUser(access.access_token)
         } catch (e) {
@@ -39,7 +73,7 @@ export default async function signin(req: Request, res: Response) {
             avatar_url: avatar,
             html_url: github_url,
             email: email
-        } = u
+        } = u ?? {};
 
         u = {github_id, github_name, username, avatar, github_url, email}
         //format user data

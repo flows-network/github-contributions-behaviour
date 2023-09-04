@@ -1,8 +1,11 @@
 import React from "react";
 import UserTab from "./UserTab.tsx";
-import {useRouter} from "next/router";
 
-export default function header(props) {
+interface HeaderProps {
+    userData: object
+}
+
+export default function Header(props: HeaderProps) {
     return (<div
         className="flex text-lg justify-between w-full sticky top-0 h-20 items-center font-medium shadow z-50">
         <div className="pl-4 xl:pl-10">

@@ -5,8 +5,18 @@ import React, {useEffect, useRef, useState} from 'react';
 import {TwitterShareButton} from "react-share";
 import server from "../helpers/server";
 import {message} from 'antd';
+import { GetServerSidePropsContext } from 'next';
 
-export async function getServerSideProps(context) {
+interface User {
+    github_id: string,
+    github_name: string,
+    username: string,
+    avatar: string,
+    role: string,
+    github_url: string
+}
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
     const user = await server.serverSideLogin(context)
     if (user) {
         return {props: {user}}
@@ -14,9 +24,9 @@ export async function getServerSideProps(context) {
     return {props: {}}
 }
 
-export default function Home({user}) {
+export default function Home({user}: { user: User }) {
 
-    const buttonElement = useRef()
+    const buttonElement = useRef<null | HTMLButtonElement>(null);
 
     const [id, setId] = useState("")
     const [owner, setOwner] = useState("")
@@ -75,7 +85,7 @@ export default function Home({user}) {
     };
 
     useEffect(() => {
-        let dotAdd
+        let dotAdd: NodeJS.Timeout | undefined;
         if (dots) {
             dotAdd = setInterval(() => {
                 if (dots.length < 3) {
@@ -261,7 +271,9 @@ export default function Home({user}) {
                                         }} className="font-bold bg-grayBg rounded-2xl py-5 px-8 text-3xl" text="Try again"
                                                 type="normal"/>
                                         <Button onClick={async () => {
-                                            await buttonElement.current.click();
+                                            if(buttonElement && buttonElement.current){
+                                                await buttonElement.current.click();
+                                            }
                                         }} className="font-bold bg-grayBg rounded-2xl py-5 px-8 text-3xl" text="Share to twitter"
                                                 type="explore"/>
                                         <div className="hidden">
@@ -381,8 +393,8 @@ export default function Home({user}) {
                 <div className="flex justify-center">
                     <div style={{width: "83vw"}}
                          className="flex items-center flex-col bg-grayBg p-12 border border-white mt-28 rounded-2xl">
-                        <div className="text-2xl font-semibold text-center">You're using a private repo and want to
-                            generate your weekly work report.
+                        <div className="text-2xl font-semibold text-center">
+                            You&apos;re using a private repo and want to generate your weekly work report.
                         </div>
                         <Button type="explore" className="mt-12 font-bold text-xl py-4 px-14 rounded-lg"
                                 text="Deploy Your Own"/>

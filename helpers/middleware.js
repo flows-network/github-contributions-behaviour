@@ -1,13 +1,4 @@
 import db from '../db';
-import {NextFunction, Request, Response} from 'express';
-
-interface User {
-    github_id: string;
-    github_name: string;
-    username: string;
-    avatar: string;
-    github_url: string;
-}
 
 export default {
     authorize
@@ -17,7 +8,7 @@ function authorize() {
     // roles param can be a single role string (e.g. Role.User or 'User')
     // or an array of roles (e.g. [Role.Admin, Role.User] or ['Admin', 'User'])
 
-    return async function (req: Request, res: Response) {
+    return async function (req, res) {
         return new Promise(async (resolve, reject) => {
             // authenticate and attach user to request object (req.user)
             if (req.session.user) {

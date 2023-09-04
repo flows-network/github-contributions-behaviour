@@ -1,16 +1,19 @@
 import React, {useState} from "react";
 import Button from "../components/Button";
 
-export default function newFlow() {
-    const [isChecked, setIsChecked] = useState(false)
+export default function SignUp() {
     const [loading, setLoading] = useState(false)
 
     const handleGoogleLogin = () => {
-        window.gapi.auth2.getAuthInstance().signIn().then((response) => {
-            const user = response.getBasicProfile();
-            console.log('Google login successful!', user);
-            setUser(user);
-        });
+        // google.accounts.id.initialize({
+        //     client_id: process.env.NEXT_PUBLIC_CLIENT_ID,
+        // });
+        //
+        // google.accounts.id.prompt((notification) => {
+        //     if (notification && notification.isNotDisplayed()) {
+        //         console.log('Google login successful!', notification.getCredential());
+        //     }
+        // });
     };
 
     return (
@@ -34,6 +37,13 @@ export default function newFlow() {
                     </Button>
                 </div>
                 <div className="relative">
+                    {/*<div id="g_id_onload"*/}
+                    {/*     data-client_id={process.env.NEXT_PUBLIC_CLIENT_ID}*/}
+                    {/*     data-login_uri="https://flows.netork"*/}
+                    {/*     data-your_own_param_1_to_login="any_value"*/}
+                    {/*     data-your_own_param_2_to_login="any_value">*/}
+                    {/*    123*/}
+                    {/*</div>*/}
                     <Button
                         onClick={() => {
                             setLoading(true)
@@ -44,7 +54,7 @@ export default function newFlow() {
                         size="small"
                         loading={loading}
                         text="Continue to contributions>"
-                        className={"mt-5 px-4 py-2" + ((!isChecked) ? " cursor-not-allowed text-gray-999 border border-gray-999" : "")}
+                        className="mt-5 px-4 py-2"
                     />
                 </div>
             </div>

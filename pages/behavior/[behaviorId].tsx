@@ -3,11 +3,30 @@ import {behaviorService} from "@/services/index"
 import Button from "@/components/Button";
 import React, {useEffect, useRef, useState} from 'react';
 import {useRouter} from "next/router.js";
+import server from "@/helpers/server";
+import {GetServerSidePropsContext} from 'next';
 
-export default function Home() {
+interface User {
+    github_id: string,
+    github_name: string,
+    username: string,
+    avatar: string,
+    role: string,
+    github_url: string
+}
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+    const user = await server.serverSideLogin(context)
+    if (user) {
+        return {props: {user}}
+    }
+    return {props: {}}
+}
+
+export default function Home({user}: { user: User }) {
 
     const router = useRouter()
-    const scrollRef = useRef()
+    const scrollRef = useRef<null | HTMLDivElement>(null);
 
     const [id, setId] = useState("")
     const [owner, setOwner] = useState("")
@@ -62,7 +81,7 @@ export default function Home() {
     };
 
     useEffect(() => {
-        let dotAdd
+        let dotAdd: NodeJS.Timeout | undefined;
         if (dots) {
             dotAdd = setInterval(() => {
                 if (dots.length < 3) {
@@ -100,7 +119,8 @@ export default function Home() {
 
     useEffect(() => {
         if (router.query.behaviorId) {
-            behaviorService.getBehavior(router.query.behaviorId).then(data => {
+            const behaviorId = router.query.behaviorId as string;
+            behaviorService.getBehavior(behaviorId).then(data => {
                 const behaviorData = data.data
                 setPageData(behaviorData.data)
                 setId(behaviorData.githubId)
@@ -112,7 +132,6 @@ export default function Home() {
                 const afterText = behaviorData.data.slice(splitIndex);
                 setAfterText(afterText)
                 setProgress(100)
-                console.log(scrollRef.current)
                 if (scrollRef.current) {
                     scrollRef.current.scrollIntoView({behavior: 'smooth'});
                 }
@@ -125,7 +144,7 @@ export default function Home() {
             <img className="absolute w-full" src="/Earth.png" alt="bg-Earth"/>
             <img style={{height: "45.7vw"}} className="absolute" src="/Light.png" alt="bg-Light"/>
             <div className="relative z-50">
-                <Header/>
+                <Header userData={user}/>
                 <div style={{lineHeight: "4.5rem", fontFamily: 'Oxanium, sans-serif'}}
                      className="font-medium mt-52 text-6xl text-center">
                     A GPT4 powered GitHub<br/>
@@ -188,7 +207,8 @@ export default function Home() {
                     ChatGPT analyze your contribution
                 </div>
                 <div className="flex justify-center">
-                    <div ref={scrollRef} style={progress === 0 && !pageData ? {width: "76vw"} : {width: "56.2vh", height: "100vh"}}
+                    <div ref={scrollRef}
+                         style={progress === 0 && !pageData ? {width: "76vw"} : {width: "56.2vh", height: "100vh"}}
                          className={"bg-grayBg border border-white mt-10 rounded-2xl " + (progress === 0 && !pageData ? "py-16 px-40" : "")}>
                         {
                             (pageData && progress >= 100) ? <div className="relative">
@@ -360,8 +380,8 @@ export default function Home() {
                 <div className="flex justify-center">
                     <div style={{width: "83vw"}}
                          className="flex items-center flex-col bg-grayBg p-12 border border-white mt-28 rounded-2xl">
-                        <div className="text-2xl font-semibold text-center">You're using a private repo and want to
-                            generate your weekly work report.
+                        <div className="text-2xl font-semibold text-center">
+                            You&apos;re using a private repo and want to generate your weekly work report.
                         </div>
                         <Button type="explore" className="mt-12 font-bold text-xl py-4 px-14 rounded-lg"
                                 text="Deploy Your Own"/>

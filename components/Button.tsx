@@ -1,11 +1,10 @@
 import React, { useState, MouseEvent } from 'react';
-import Lottie, { LottieOptions } from 'react-lottie';
+import Lottie from 'react-lottie';
 import roundLoading from '../media/roundLoading.json';
 
 interface ButtonProps {
-    onClick: (event: MouseEvent<HTMLButtonElement>) => Promise<void> | void;
+    onClick?: (event: MouseEvent<HTMLButtonElement>) => Promise<void> | void;
     className?: string;
-    eventName?: string;
     disabled?: boolean;
     type?: string;
     size?: 'small' | 'large';
@@ -16,18 +15,17 @@ interface ButtonProps {
 }
 
 const Button: React.FC<ButtonProps> = (props) => {
-    const { onClick, className, eventName, disabled, type, size, notRounded, loading, text, children } = props;
+    const { onClick, className, disabled, type, size, notRounded, loading, text, children } = props;
     const [buttonState, setButtonState] = useState<boolean>(true);
     const [loadingState, setLoadingState] = useState<boolean>(false);
 
     const buttonFunc = async (e: MouseEvent<HTMLButtonElement>) => {
         setButtonState(false);
         setLoadingState(true);
-        if (eventName) {
-            gtag('event', eventName);
-        }
         try {
-            await onClick(e);
+            if(onClick){
+                await onClick(e);
+            }
             setButtonState(true);
             setLoadingState(false);
         } catch (e) {
@@ -36,7 +34,7 @@ const Button: React.FC<ButtonProps> = (props) => {
         }
     };
 
-    const lottieOptions: LottieOptions = {
+    const lottieOptions = {
         loop: true,
         autoplay: true,
         rendererSettings: { preserveAspectRatio: 'xMidYMid slice' },
