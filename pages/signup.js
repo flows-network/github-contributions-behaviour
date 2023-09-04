@@ -5,15 +5,15 @@ export default function SignUp() {
     const [loading, setLoading] = useState(false)
 
     const handleGoogleLogin = () => {
-        // google.accounts.id.initialize({
-        //     client_id: process.env.NEXT_PUBLIC_CLIENT_ID,
-        // });
-        //
-        // google.accounts.id.prompt((notification) => {
-        //     if (notification && notification.isNotDisplayed()) {
-        //         console.log('Google login successful!', notification.getCredential());
-        //     }
-        // });
+        google.accounts.id.initialize({
+            client_id: process.env.NEXT_PUBLIC_CLIENT_ID,
+        });
+
+        google.accounts.id.prompt((notification) => {
+            if (notification && notification.isNotDisplayed()) {
+                console.log('Google login successful!', notification.getCredential());
+            }
+        });
     };
 
     return (
