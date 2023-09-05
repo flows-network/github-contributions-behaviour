@@ -15,26 +15,31 @@ export default function SignUp() {
             context: 'signin', // optional
         };
 
-        googleOneTap(options, (response) => {
-            // Send response to server
-            console.log(response);
-        });
-
-        // google.accounts.id.initialize({
-        //     client_id: process.env.NEXT_PUBLIC_CLIENT_ID,
-        //     callback: (data)=>{
-        //         console.log(data)
-        //     }
-        // });
-        //
-        // google.accounts.id.prompt((notification) => {
-        //     if (notification && notification.isNotDisplayed()) {
-        //         console.log('Google login successful!', notification.getCredential());
-        //     }
-        // }).then(a=>{
-        //     console.log(a)
-        // });
+        googleOneTap(options, handleCredentialResponse);
     };
+
+    function decodeJwtResponse(credential) {
+        const [header, payload, signature] = credential.split(".");
+        const decodedPayload = atob(payload);
+
+        // 将有效载荷解析为 JSON 对象
+        return JSON.parse(decodedPayload);
+    }
+
+// 处理凭证响应
+    function handleCredentialResponse(response) {
+        console.log("response",response)
+
+        const responsePayload = decodeJwtResponse(response.credential);
+        console.log("responsePayload",responsePayload)
+        console.log("ID: " + responsePayload.sub);
+        console.log("Full Name: " + responsePayload.name);
+        console.log("Given Name: " + responsePayload.given_name);
+        console.log("Family Name: " + responsePayload.family_name);
+        console.log("Image URL: " + responsePayload.picture);
+        console.log("Email: " + responsePayload.email);
+    }
+
 
     return (
         <div className="text-black flex flex-col justify-center items-center h-screen bg-gray-f5 overflow-hidden">
@@ -80,7 +85,7 @@ export default function SignUp() {
 
                 <div id="g_id_onload"
                      data-client_id={process.env.NEXT_PUBLIC_CLIENT_ID}
-                     data-callback="handleCredentialResponse">
+                     data-callback={handleCredentialResponse}>
                 </div>
             </div>
         </div>
