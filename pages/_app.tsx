@@ -11,11 +11,16 @@ interface MyAppProps {
     pageProps: Record<string, unknown>;
 }
 
-export default function MyApp({ Component, pageProps }: MyAppProps) {
+interface Window {
+    sign: (code: string) => Promise<void>;
+}
+
+
+export default function MyApp({Component, pageProps}: MyAppProps) {
     const router = useRouter();
 
     useEffect(() => {
-        window.sign = async function (code: string) {
+        (window as Window).sign = async function (code: string) {
             await accountService.sign(code);
             router.push('/');
         };
