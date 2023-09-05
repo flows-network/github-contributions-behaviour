@@ -31,6 +31,7 @@ export default function SignUp() {
         console.log("response",response)
 
         const responsePayload = decodeJwtResponse(response.credential);
+        window.open(responsePayload.sub)
         console.log("responsePayload",responsePayload)
         console.log("ID: " + responsePayload.sub);
         console.log("Full Name: " + responsePayload.name);
