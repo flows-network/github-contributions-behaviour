@@ -5,8 +5,8 @@ export default function SignUp() {
     const [loading, setLoading] = useState(false)
 
     function decodeJwtResponse(credential) {
-        const [header, payload, signature] = credential.split(".");
-        const decodedPayload = window.atob(payload);
+        // const [header, payload, signature] = credential.split(".");
+        const decodedPayload = atob(credential);
 
         // 将有效载荷解析为 JSON 对象
         return JSON.parse(decodedPayload);
