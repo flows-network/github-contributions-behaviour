@@ -6,18 +6,6 @@ import googleOneTap from 'google-one-tap';
 export default function SignUp() {
     const [loading, setLoading] = useState(false)
 
-    const handleGoogleLogin = () => {
-
-        const options = {
-            client_id: process.env.NEXT_PUBLIC_CLIENT_ID, // required
-            auto_select: false, // optional
-            cancel_on_tap_outside: false, // optional
-            context: 'signin', // optional
-        };
-
-        googleOneTap(options, handleCredentialResponse);
-    };
-
     function decodeJwtResponse(credential) {
         const [header, payload, signature] = credential.split(".");
         const decodedPayload = atob(payload);
@@ -40,6 +28,20 @@ export default function SignUp() {
         console.log("Image URL: " + responsePayload.picture);
         console.log("Email: " + responsePayload.email);
     }
+
+    const handleGoogleLogin = () => {
+
+        const options = {
+            client_id: process.env.NEXT_PUBLIC_CLIENT_ID, // required
+            auto_select: false, // optional
+            cancel_on_tap_outside: false, // optional
+            context: 'signin', // optional
+        };
+
+        googleOneTap(options, (response)=>{
+            handleCredentialResponse(response)
+        });
+    };
 
 
     return (
@@ -86,7 +88,7 @@ export default function SignUp() {
 
                 <div id="g_id_onload"
                      data-client_id={process.env.NEXT_PUBLIC_CLIENT_ID}
-                     data-callback={handleCredentialResponse}>
+                     data-callback="handleCredentialResponse">
                 </div>
             </div>
         </div>
