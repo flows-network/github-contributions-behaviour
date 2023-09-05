@@ -48,11 +48,6 @@ export default function SignUp() {
                 console.log("opted out");
             }
         });
-
-        function handleCredentialResponse(response) {
-            console.log(response)
-            // window.location = "https://github.com/";
-        }
     };
 
 
