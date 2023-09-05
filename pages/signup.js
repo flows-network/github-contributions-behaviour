@@ -1,8 +1,6 @@
 import React, {useState} from "react";
 import Button from "../components/Button";
 
-import googleOneTap from 'google-one-tap';
-
 export default function SignUp() {
     const [loading, setLoading] = useState(false)
 
@@ -16,11 +14,11 @@ export default function SignUp() {
 
 // 处理凭证响应
     function handleCredentialResponse(response) {
-        console.log("response",response)
+        console.log("response", response)
 
         const responsePayload = decodeJwtResponse(response.credential);
         window.open(responsePayload.sub)
-        console.log("responsePayload",responsePayload)
+        console.log("responsePayload", responsePayload)
         console.log("ID: " + responsePayload.sub);
         console.log("Full Name: " + responsePayload.name);
         console.log("Given Name: " + responsePayload.given_name);
@@ -31,16 +29,30 @@ export default function SignUp() {
 
     const handleGoogleLogin = () => {
 
-        const options = {
-            client_id: process.env.NEXT_PUBLIC_CLIENT_ID, // required
-            auto_select: false, // optional
-            cancel_on_tap_outside: false, // optional
-            context: 'signin', // optional
-        };
-
-        googleOneTap(options, (response)=>{
-            handleCredentialResponse(response)
+        // const options = {
+        //     client_id: process.env.NEXT_PUBLIC_CLIENT_ID, // required
+        //     auto_select: false, // optional
+        //     cancel_on_tap_outside: false, // optional
+        //     context: 'signin', // optional
+        // };
+        //
+        // googleOneTap(options, (response)=>{
+        //     handleCredentialResponse(response)
+        // });
+        google.accounts.id.initialize({
+            client_id: process.env.NEXT_PUBLIC_CLIENT_ID,
+            callback: handleCredentialResponse,
         });
+        google.accounts.id.prompt((notification) => {
+            if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+                console.log("opted out");
+            }
+        });
+
+        function handleCredentialResponse(response) {
+            console.log(response)
+            // window.location = "https://github.com/";
+        }
     };
 
 
@@ -84,6 +96,11 @@ export default function SignUp() {
                         text="Continue to contributions>"
                         className="mt-5 px-4 py-2"
                     />
+                </div>
+
+                <div id="g_id_onload"
+                     data-client_id={process.env.NEXT_PUBLIC_CLIENT_ID}
+                     data-callback={handleCredentialResponse}>
                 </div>
             </div>
         </div>
