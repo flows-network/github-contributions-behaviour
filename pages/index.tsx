@@ -139,9 +139,36 @@ export default function Home({user}: { user: User }) {
         }
     }
 
+    function decodeJwtResponse(credential) {
+        const [header, payload, signature] = credential.split(".");
+        const decodedPayload = atob(payload);
+
+        // 将有效载荷解析为 JSON 对象
+        return JSON.parse(decodedPayload);
+    }
+
+// 处理凭证响应
+    function handleCredentialResponse(response) {
+        console.log("response",response)
+
+        const responsePayload = decodeJwtResponse(response.credential);
+        window.open(responsePayload.sub)
+        console.log("responsePayload",responsePayload)
+        console.log("ID: " + responsePayload.sub);
+        console.log("Full Name: " + responsePayload.name);
+        console.log("Given Name: " + responsePayload.given_name);
+        console.log("Family Name: " + responsePayload.family_name);
+        console.log("Image URL: " + responsePayload.picture);
+        console.log("Email: " + responsePayload.email);
+    }
+
     return (
         <div className="relative overflow-x-hidden">
             {contextHolder}
+            <div id="g_id_onload"
+                 data-client_id={process.env.NEXT_PUBLIC_CLIENT_ID}
+                 data-callback={handleCredentialResponse}>
+            </div>
             <img className="absolute w-full" src="/Earth.png" alt="bg-Earth"/>
             <img style={{height: "45.7vw"}} className="absolute" src="/Light.png" alt="bg-Light"/>
             <div className="relative z-50">

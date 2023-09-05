@@ -85,11 +85,6 @@ export default function SignUp() {
                         className="mt-5 px-4 py-2"
                     />
                 </div>
-
-                <div id="g_id_onload"
-                     data-client_id={process.env.NEXT_PUBLIC_CLIENT_ID}
-                     data-callback="handleCredentialResponse">
-                </div>
             </div>
         </div>
     )
