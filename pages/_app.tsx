@@ -4,24 +4,26 @@ import {useRouter} from "next/router.js";
 import Head from "next/head";
 import Script from "next/script";
 import {accountService} from "@/services/index";
-import {AppProps} from 'next/app';
 
 
-export default function MyApp({Component, pageProps}: AppProps) {
-    const router = useRouter()
+interface MyAppProps {
+    Component: React.ComponentType;
+    pageProps: Record<string, unknown>;
+}
+
+export default function MyApp({ Component, pageProps }: MyAppProps) {
+    const router = useRouter();
 
     useEffect(() => {
-        (window as any).sign = async function (code: string) {
+        window.sign = async function (code: string) {
             await accountService.sign(code);
             router.push('/');
         };
-    }, [])
-
+    }, []);
 
     return (
         <>
             <Script strategy="afterInteractive" src="https://www.googletagmanager.com/gtag/js?id=G-85B8CW1R8E"/>
-            <script src="https://accounts.google.com/gsi/client" async defer/>
             <Script
                 id='google-analytics'
                 strategy="afterInteractive"

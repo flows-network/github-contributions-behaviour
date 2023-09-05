@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import Button from "../components/Button";
+import {accountService} from "../services";
 
 export default function SignUp() {
     const [loading, setLoading] = useState(false)
@@ -19,7 +20,6 @@ export default function SignUp() {
         console.log("response", response)
 
         const responsePayload = parseJwt(response.credential);
-        window.open(responsePayload.sub)
         console.log("responsePayload", responsePayload)
         console.log("ID: " + responsePayload.sub);
         console.log("Full Name: " + responsePayload.name);
@@ -27,6 +27,7 @@ export default function SignUp() {
         console.log("Family Name: " + responsePayload.family_name);
         console.log("Image URL: " + responsePayload.picture);
         console.log("Email: " + responsePayload.email);
+        accountService.sign()
     }
 
     const handleGoogleLogin = () => {

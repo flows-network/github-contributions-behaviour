@@ -163,7 +163,6 @@ export default function Home({user}: { user: User }) {
     }
 
     function decodeJwtResponse(credential: string): ResponsePayload {
-        // 解码 JWT，并返回有效载荷
         const decodedPayload = atob(credential.split(".")[1]);
         return JSON.parse(decodedPayload) as ResponsePayload;
     }
