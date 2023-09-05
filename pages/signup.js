@@ -1,21 +1,39 @@
 import React, {useState} from "react";
 import Button from "../components/Button";
 
+import { googleOneTap } from 'google-one-tap';
+
 export default function SignUp() {
     const [loading, setLoading] = useState(false)
 
     const handleGoogleLogin = () => {
-        google.accounts.id.initialize({
-            client_id: process.env.NEXT_PUBLIC_CLIENT_ID,
+
+        const options = {
+            client_id: 'process.env.NEXT_PUBLIC_CLIENT_ID', // required
+            auto_select: false, // optional
+            cancel_on_tap_outside: false, // optional
+            context: 'signin', // optional
+        };
+
+        googleOneTap(options, (response) => {
+            // Send response to server
+            console.log(response);
         });
 
-        google.accounts.id.prompt((notification) => {
-            if (notification && notification.isNotDisplayed()) {
-                console.log('Google login successful!', notification.getCredential());
-            }else {
-                console.log(notification)
-            }
-        });
+        // google.accounts.id.initialize({
+        //     client_id: process.env.NEXT_PUBLIC_CLIENT_ID,
+        //     callback: (data)=>{
+        //         console.log(data)
+        //     }
+        // });
+        //
+        // google.accounts.id.prompt((notification) => {
+        //     if (notification && notification.isNotDisplayed()) {
+        //         console.log('Google login successful!', notification.getCredential());
+        //     }
+        // }).then(a=>{
+        //     console.log(a)
+        // });
     };
 
     return (
@@ -58,6 +76,11 @@ export default function SignUp() {
                         text="Continue to contributions>"
                         className="mt-5 px-4 py-2"
                     />
+                </div>
+
+                <div id="g_id_onload"
+                     data-client_id="YOUR_GOOGLE_CLIENT_ID"
+                     data-callback="handleCredentialResponse">
                 </div>
             </div>
         </div>
