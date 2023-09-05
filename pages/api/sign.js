@@ -1,44 +1,10 @@
-import gh from '../../helpers/gh';
+import {gh} from '../../helpers';
 import {default as db} from '../../db';
-import { NextApiRequest, NextApiResponse } from 'next';
-import session from 'express-session';
 
-type User = {
-    github_id?: string;
-    id?: string;
-
-    github_name?: string;
-    name?: string;
-
-    login?: string;
-    username?: string;
-
-    avatar_url?: string;
-    avatar?: string;
-
-    html_url?: string;
-    github_url?: string;
-
-    email?: string;
-};
-
-interface CustomSession extends session.Session {
-    user?: string,
-    access_token?: string,
-    gh_refresh_token?: string,
-    gh_refresh_token_expires_in?: string,
-}
-
-declare module 'next' {
-    interface NextApiRequest {
-        session: CustomSession;
-    }
-}
-
-export default async function signin(req: NextApiRequest, res: NextApiResponse) {
+export default async function (req, res) {
     if (!req.query.code) {
-        res.status(400).send('No code supplied');
-        return;
+        res.status(400).send('No code supplied')
+        return
     }
     //Now, you just got a temporary code from GitHub, so should to request an access_token to distinguish users
     const access = await gh.getAccess(req.query.code)
@@ -49,11 +15,11 @@ export default async function signin(req: NextApiRequest, res: NextApiResponse) 
             access_token expire after 8 hours, you can use refresh_token to renewing a new access_token
             refresh_token are valid for 6 months
          */
-        let u: User | undefined;
+        let u
         try {
             u = await gh.getUser(access.access_token)
-        } catch (e) {
-            console.log("signError", e)
+        }catch (e) {
+            console.log("signError",e)
         }
 
         /*
@@ -73,7 +39,7 @@ export default async function signin(req: NextApiRequest, res: NextApiResponse) 
             avatar_url: avatar,
             html_url: github_url,
             email: email
-        } = u ?? {};
+        } = u
 
         u = {github_id, github_name, username, avatar, github_url, email}
         //format user data
@@ -89,13 +55,13 @@ export default async function signin(req: NextApiRequest, res: NextApiResponse) 
                 email: u.email
             })
             //if don't have this account, add it
-        } else {
+        }else {
             account["email"] = u.email
         }
         await account.save();
-        req.session.regenerate(function (err: Error) {
+        req.session.regenerate(function (err) {
             if (err) {
-                return res.status(500).send('Service unavailable');
+                return res.status(500).send('Service unavailable')
             }
 
             req.session.user = account.id;
@@ -105,12 +71,14 @@ export default async function signin(req: NextApiRequest, res: NextApiResponse) 
 
             // save the session before return to ensure page
             // load does not happen before session is saved
-            req.session.save(function (err: Error) {
+            req.session.save(function (err) {
                 if (err) {
-                    return res.status(500).send('Service unavailable');
+                    return res.status(500).send('Service unavailable')
                 }
-                return res.send(u);
-            });
-        });
+                return res.send(u)
+            })
+        })
+    } else {
+        res.status(400).send(access)
     }
 }
