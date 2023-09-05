@@ -6,20 +6,11 @@ import Script from "next/script";
 import {accountService} from "@/services/index";
 
 
-interface MyAppProps {
-    Component: React.ComponentType;
-    pageProps: Record<string, unknown>;
-}
-
-type myWindow = Window & {
-    sign?: (code: string) => Promise<void>;
-};
-
-export default function MyApp({Component, pageProps}: MyAppProps) {
+export default function MyApp({Component, pageProps}) {
     const router = useRouter();
 
     useEffect(() => {
-        (window as myWindow).sign = async function (code: string) {
+        window.sign = async function (code) {
             await accountService.sign(code);
             router.push('/');
         };
