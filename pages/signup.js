@@ -12,6 +12,8 @@ export default function SignUp() {
         google.accounts.id.prompt((notification) => {
             if (notification && notification.isNotDisplayed()) {
                 console.log('Google login successful!', notification.getCredential());
+            }else {
+                console.log(notification)
             }
         });
     };
