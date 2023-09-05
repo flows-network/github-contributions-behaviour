@@ -79,7 +79,7 @@ export default function SignUp() {
                 </div>
 
                 <div id="g_id_onload"
-                     data-client_id="YOUR_GOOGLE_CLIENT_ID"
+                     data-client_id={process.env.NEXT_PUBLIC_CLIENT_ID}
                      data-callback="handleCredentialResponse">
                 </div>
             </div>
