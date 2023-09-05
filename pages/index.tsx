@@ -173,7 +173,7 @@ export default function Home({user}: { user: User }) {
             {contextHolder}
             <div id="g_id_onload"
                  data-client_id={process.env.NEXT_PUBLIC_CLIENT_ID}
-                 data-callback={handleCredentialResponse}>
+                 data-native_callback={handleCredentialResponse}>
             </div>
             <img className="absolute w-full" src="/Earth.png" alt="bg-Earth"/>
             <img style={{height: "45.7vw"}} className="absolute" src="/Light.png" alt="bg-Light"/>
