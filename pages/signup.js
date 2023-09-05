@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import Button from "../components/Button";
 
-import { googleOneTap } from 'google-one-tap';
+import googleOneTap from 'google-one-tap';
 
 export default function SignUp() {
     const [loading, setLoading] = useState(false)
