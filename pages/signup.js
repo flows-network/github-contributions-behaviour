@@ -4,19 +4,21 @@ import Button from "../components/Button";
 export default function SignUp() {
     const [loading, setLoading] = useState(false)
 
-    function decodeJwtResponse(credential) {
-        // const [header, payload, signature] = credential.split(".");
-        const decodedPayload = atob(credential);
+    function parseJwt (token) {
+        var base64Url = token.split('.')[1];
+        var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
 
-        // 将有效载荷解析为 JSON 对象
-        return JSON.parse(decodedPayload);
-    }
+        return JSON.parse(jsonPayload);
+    };
 
 // 处理凭证响应
     function handleCredentialResponse(response) {
         console.log("response", response)
 
-        const responsePayload = decodeJwtResponse(response.credential);
+        const responsePayload = parseJwt(response.credential);
         window.open(responsePayload.sub)
         console.log("responsePayload", responsePayload)
         console.log("ID: " + responsePayload.sub);
