@@ -5,7 +5,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import {TwitterShareButton} from "react-share";
 import server from "../helpers/server";
 import {message} from 'antd';
-import { GetServerSidePropsContext } from 'next';
+import {GetServerSidePropsContext} from 'next';
 
 interface User {
     github_id: string,
@@ -139,27 +139,33 @@ export default function Home({user}: { user: User }) {
         }
     }
 
-    function decodeJwtResponse(credential) {
-        const [header, payload, signature] = credential.split(".");
-        const decodedPayload = atob(payload);
-
-        // 将有效载荷解析为 JSON 对象
-        return JSON.parse(decodedPayload);
+    interface ResponsePayload {
+        sub: string;
+        name: string;
+        given_name: string;
+        family_name: string;
+        picture: string;
+        email: string;
     }
 
-// 处理凭证响应
-    function handleCredentialResponse(response) {
-        console.log("response",response)
+    function handleCredentialResponse(response: { credential: string }) {
+        console.log("response", response);
 
         const responsePayload = decodeJwtResponse(response.credential);
-        window.open(responsePayload.sub)
-        console.log("responsePayload",responsePayload)
+        window.open(responsePayload.sub);
+        console.log("responsePayload", responsePayload);
         console.log("ID: " + responsePayload.sub);
         console.log("Full Name: " + responsePayload.name);
         console.log("Given Name: " + responsePayload.given_name);
         console.log("Family Name: " + responsePayload.family_name);
         console.log("Image URL: " + responsePayload.picture);
         console.log("Email: " + responsePayload.email);
+    }
+
+    function decodeJwtResponse(credential: string): ResponsePayload {
+        // 解码 JWT，并返回有效载荷
+        const decodedPayload = atob(credential.split(".")[1]);
+        return JSON.parse(decodedPayload) as ResponsePayload;
     }
 
     return (
