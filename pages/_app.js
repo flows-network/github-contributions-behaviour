@@ -17,7 +17,7 @@ export default function MyApp({Component, pageProps}) {
 
     return (
         <>
-            <script src="https://accounts.google.com/gsi/client" async defer/>
+            <Script src="https://accounts.google.com/gsi/client" async defer/>
             <Head>
                 <title>Flows.network</title>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
