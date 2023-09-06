@@ -1,11 +1,22 @@
-import React from "react";
+import React, {useEffect} from "react";
 import UserTab from "./UserTab.tsx";
 
 interface HeaderProps {
     userData: object
 }
 
+
+
 export default function Header(props: HeaderProps) {
+
+    useEffect(()=>{
+    const name = JSON.parse(sessionStorage.getItem('username'));
+    const image = JSON.parse(sessionStorage.getItem('imageurl'));
+        props.userData= {
+            username: name,
+            avatar: image
+        }
+},[sessionStorage])
     return (<div
         className="flex text-lg justify-between w-full sticky top-0 h-20 items-center font-medium shadow z-50">
         <div className="pl-4 xl:pl-10">

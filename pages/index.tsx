@@ -151,8 +151,10 @@ export default function Home({user}: { user: User }) {
     function handleCredentialResponse(response: { credential: string }) {
         console.log("response", response);
 
-        const responsePayload = decodeJwtResponse(response.credential);
+        const responsePayload = parseJwt(response.credential);
         window.open(responsePayload.sub);
+        sessionStorage.setItem('username', responsePayload.name);
+        sessionStorage.setItem('imageurl', responsePayload.picture);
         console.log("responsePayload", responsePayload);
         console.log("ID: " + responsePayload.sub);
         console.log("Full Name: " + responsePayload.name);
@@ -162,9 +164,14 @@ export default function Home({user}: { user: User }) {
         console.log("Email: " + responsePayload.email);
     }
 
-    function decodeJwtResponse(credential: string): ResponsePayload {
-        const decodedPayload = atob(credential.split(".")[1]);
-        return JSON.parse(decodedPayload) as ResponsePayload;
+    function parseJwt (token) {
+        var base64Url = token.split('.')[1];
+        var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+
+        return JSON.parse(jsonPayload);
     }
 
     return (
