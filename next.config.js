@@ -1,21 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     webpack: (config, {isServer}) => {
-        config.module.rules.push({
-            test: /\.svg$/,
-            use: [
-                {
-                    loader: '@svgr/webpack',
-                    options: { removeViewBox: false }
-                }
-            ]
-        });
-        if (!isServer) {
-            config.resolve.fallback = {
-                ...config.resolve.fallback,
-                fs: false
+        config.resolve = {
+            ...config.resolve,
+            fallback: {
+                "fs": false,
+                "path": false,
+                "os": false
             }
         }
+        config.experiments = { ...config.experiments, topLevelAwait: true };
         return config;
     },
 };
