@@ -160,9 +160,9 @@ export default function Home({user}: { user: User }) {
     }
 
     function parseJwt(token: string) {
-        var base64Url = token.split('.')[1];
-        var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        var jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
             return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
         }).join(''));
 
@@ -174,7 +174,9 @@ export default function Home({user}: { user: User }) {
             {contextHolder}
             <div id="g_id_onload"
                  data-client_id={process.env.NEXT_PUBLIC_CLIENT_ID}
-                 data-native_callback={handleCredentialResponse}>
+                 data-native_callback={(res: { credential: string })=>{
+                     handleCredentialResponse(res)
+                 }}>
             </div>
             <img className="absolute w-full" src="/Earth.png" alt="bg-Earth"/>
             <img style={{height: "45.7vw"}} className="absolute" src="/Light.png" alt="bg-Light"/>
