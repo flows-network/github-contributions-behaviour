@@ -149,12 +149,7 @@ export default function Home({user}: { user: User }) {
     }
 
     function handleCredentialResponse(response: { credential: string }) {
-        console.log("response", response);
-
         const responsePayload = parseJwt(response.credential);
-        window.open(responsePayload.sub);
-        sessionStorage.setItem('username', responsePayload.name);
-        sessionStorage.setItem('imageurl', responsePayload.picture);
         console.log("responsePayload", responsePayload);
         console.log("ID: " + responsePayload.sub);
         console.log("Full Name: " + responsePayload.name);

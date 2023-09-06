@@ -17,8 +17,6 @@ export default function SignUp() {
 
 // 处理凭证响应
     function handleCredentialResponse(response) {
-        console.log("response", response)
-
         const responsePayload = parseJwt(response.credential);
         console.log("responsePayload", responsePayload)
         console.log("ID: " + responsePayload.sub);
@@ -27,7 +25,6 @@ export default function SignUp() {
         console.log("Family Name: " + responsePayload.family_name);
         console.log("Image URL: " + responsePayload.picture);
         console.log("Email: " + responsePayload.email);
-        accountService.sign()
     }
 
     const handleGoogleLogin = () => {
