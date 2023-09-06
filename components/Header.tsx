@@ -10,8 +10,8 @@ interface HeaderProps {
 export default function Header(props: HeaderProps) {
 
     useEffect(()=>{
-    const name = JSON.parse(sessionStorage.getItem('username'));
-    const image = JSON.parse(sessionStorage.getItem('imageurl'));
+    const name = JSON.parse(sessionStorage.getItem('username') || "");
+    const image = JSON.parse(sessionStorage.getItem('imageurl') || "");
         props.userData= {
             username: name,
             avatar: image

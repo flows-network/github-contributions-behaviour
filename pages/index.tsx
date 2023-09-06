@@ -164,10 +164,10 @@ export default function Home({user}: { user: User }) {
         console.log("Email: " + responsePayload.email);
     }
 
-    function parseJwt (token) {
+    function parseJwt(token: string) {
         var base64Url = token.split('.')[1];
         var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+        var jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
             return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
         }).join(''));
 
@@ -307,13 +307,15 @@ export default function Home({user}: { user: User }) {
                                             setPageData("")
                                             setBeforeText("")
                                             setAfterText("")
-                                        }} className="font-bold bg-grayBg rounded-2xl py-5 px-8 text-3xl" text="Try again"
+                                        }} className="font-bold bg-grayBg rounded-2xl py-5 px-8 text-3xl"
+                                                text="Try again"
                                                 type="normal"/>
                                         <Button onClick={async () => {
-                                            if(buttonElement && buttonElement.current){
+                                            if (buttonElement && buttonElement.current) {
                                                 await buttonElement.current.click();
                                             }
-                                        }} className="font-bold bg-grayBg rounded-2xl py-5 px-8 text-3xl" text="Share to twitter"
+                                        }} className="font-bold bg-grayBg rounded-2xl py-5 px-8 text-3xl"
+                                                text="Share to twitter"
                                                 type="explore"/>
                                         <div className="hidden">
                                             <TwitterShareButton ref={buttonElement} url="flows.network"

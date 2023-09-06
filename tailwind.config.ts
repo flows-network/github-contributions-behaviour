@@ -1,6 +1,6 @@
 import type {Config} from 'tailwindcss'
 
-module.exports as Config = {
+(module.exports as Config) = {
     content: [
         './pages/**/*.{js,ts,jsx,tsx,mdx}',
         './components/**/*.{js,ts,jsx,tsx,mdx}'
