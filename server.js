@@ -1,9 +1,7 @@
-const express = require('express');
-const session = require('express-session');
-const MongoStore = require('connect-mongo');
-
-const {createServer} = require('http');
-const next = require('next');
+import express from 'express';
+import session from 'express-session';
+import {createServer} from 'http';
+import next from 'next';
 
 const port = parseInt(process.env.PORT, 10) || 3000
 const dev = process.env.NODE_ENV !== 'production'
@@ -11,19 +9,13 @@ const app = next({dev})
 const handle = app.getRequestHandler()
 
 app.prepare().then(() => {
-    const expressServer = express()
-
+    const expressServer = express();
     try {
         expressServer.use(session({
             secret: process.env.SESSION_SECRET,
             resave: false,
             saveUninitialized: false,
-            cookie: {secure: 'auto'},
-            store: MongoStore.create({
-                mongoUrl: process.env.MONGODB_URI,
-                autoRemove: 'interval',
-                autoRemoveInterval: 1 // In minutes. Default
-            })
+            cookie: {secure: 'auto'}
         }))
     } catch (err) {
         console.error(err)

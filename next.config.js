@@ -1,5 +1,5 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+export default {
     webpack: (config, {isServer}) => {
         config.resolve = {
             ...config.resolve,
@@ -11,7 +11,5 @@ const nextConfig = {
         }
         config.experiments = { ...config.experiments, topLevelAwait: true };
         return config;
-    },
+    }
 };
-
-module.exports = nextConfig

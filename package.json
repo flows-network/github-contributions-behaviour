@@ -2,6 +2,7 @@
   "name": "github-contributions-behavior",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "node --experimental-specifier-resolution=node server.js",
     "build": "next build",
@@ -23,6 +24,7 @@
     "express-session": "^1.17.3",
     "google-one-tap": "^1.0.6",
     "http": "^0.0.1-security",
+    "micro": "^10.0.1",
     "moment": "^2.29.4",
     "mongoose": "^7.4.3",
     "next": "13.4.18",
