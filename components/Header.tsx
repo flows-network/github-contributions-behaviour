@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import UserTab from "./UserTab.tsx";
 
 interface HeaderProps {

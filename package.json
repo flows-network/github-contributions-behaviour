@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "node --experimental-specifier-resolution=node server.js",
     "build": "next build",
-    "start": "cross-env NODE_ENV=production node --experimental-specifier-resolution=node server.js",
+    "start": "node --experimental-specifier-resolution=node server.js",
     "lint": "next lint"
   },
   "dependencies": {

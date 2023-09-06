@@ -3,13 +3,23 @@ import React, {useEffect} from "react";
 import {useRouter} from "next/router.js";
 import Head from "next/head";
 import Script from "next/script";
-import {accountService} from "../services/index";
+import {accountService} from "@/services/index";
 
-export default function MyApp({Component, pageProps}) {
+
+interface MyAppProps {
+    Component: React.ComponentType;
+    pageProps: Record<string, unknown>;
+}
+
+type myWindow = Window & {
+    sign?: (code: string) => Promise<void>;
+};
+
+export default function MyApp({Component, pageProps}: MyAppProps) {
     const router = useRouter();
 
     useEffect(() => {
-        window.sign = async function (code) {
+        (window as myWindow).sign = async function (code: string) {
             await accountService.sign(code);
             router.push('/');
         };
@@ -27,3 +37,4 @@ export default function MyApp({Component, pageProps}) {
         </>
     )
 }
+
