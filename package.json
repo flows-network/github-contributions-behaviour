@@ -4,9 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "node --experimental-specifier-resolution=node server.js",
+    "dev": "next dev",
     "build": "next build",
-    "start": "node --experimental-specifier-resolution=node server.js",
+    "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
