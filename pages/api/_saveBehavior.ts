@@ -1,4 +1,4 @@
-import {default as db} from '@/db';
+import {default as db} from '../../db';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 async function fetchGitHubData(url: string) {

@@ -1,6 +1,5 @@
-import type {Config} from 'tailwindcss'
-
-(module.exports as Config) = {
+/** @type {import('tailwindcss').Config} */
+module.exports = {
     content: [
         './pages/**/*.{js,ts,jsx,tsx,mdx}',
         './components/**/*.{js,ts,jsx,tsx,mdx}'

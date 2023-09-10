@@ -1,21 +1,16 @@
-import './globals.css'
+import './app.css'
 import React, {useEffect} from "react";
-import {useRouter} from "next/router.js";
+import {useRouter} from "next/router";
 import Head from "next/head";
 import Script from "next/script";
-import {accountService} from "@/services/index";
-
-
-interface MyAppProps {
-    Component: React.ComponentType;
-    pageProps: Record<string, unknown>;
-}
+import {accountService} from "../services/index";
+import type { AppProps } from 'next/app'
 
 type myWindow = Window & {
     sign?: (code: string) => Promise<void>;
 };
 
-export default function MyApp({Component, pageProps}: MyAppProps) {
+export default function MyApp({Component, pageProps}: AppProps) {
     const router = useRouter();
 
     useEffect(() => {
@@ -27,22 +22,7 @@ export default function MyApp({Component, pageProps}: MyAppProps) {
 
     return (
         <>
-            <Script strategy="afterInteractive" src="https://www.googletagmanager.com/gtag/js?id=G-85B8CW1R8E"/>
-            <Script
-                id='google-analytics'
-                strategy="afterInteractive"
-                dangerouslySetInnerHTML={{
-                    __html: `window.dataLayer = window.dataLayer || [];
-                             function gtag(){
-                             dataLayer.push(arguments);
-                             }
-                             gtag('js', new Date());
-                             gtag('config', 'G-85B8CW1R8E', {
-                             page_path: window.location.pathname,
-                             });`
-                }}
-            />
-            <script src="https://accounts.google.com/gsi/client" async defer/>
+            <Script src="https://accounts.google.com/gsi/client" async defer/>
             <Head>
                 <title>Flows.network</title>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>

@@ -23,7 +23,7 @@ app.prepare().then(() => {
 
     const httpServer = createServer(expressServer)
 
-    expressServer.all('*', (req, res) => {
+    expressServer.all('*', async (req, res) => {
         return handle(req, res)
     })
 

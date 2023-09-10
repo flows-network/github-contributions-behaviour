@@ -27,17 +27,6 @@ export default function SignUp() {
     }
 
     const handleGoogleLogin = () => {
-
-        // const options = {
-        //     client_id: process.env.NEXT_PUBLIC_CLIENT_ID, // required
-        //     auto_select: false, // optional
-        //     cancel_on_tap_outside: false, // optional
-        //     context: 'signin', // optional
-        // };
-        //
-        // googleOneTap(options, (response)=>{
-        //     handleCredentialResponse(response)
-        // });
         google.accounts.id.initialize({
             client_id: process.env.NEXT_PUBLIC_CLIENT_ID, callback: handleCredentialResponse,
         });

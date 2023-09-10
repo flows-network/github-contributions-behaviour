@@ -1,6 +1,7 @@
 import Header from "../components/Header"
+import type { NextPage } from 'next'
 import {behaviorService} from "../services/index"
-import Button from "@/components/Button";
+import Button from "../components/Button";
 import React, {useEffect, useRef, useState} from 'react';
 import {TwitterShareButton} from "react-share";
 import server from "../helpers/server";
@@ -24,7 +25,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     return {props: {}}
 }
 
-export default function Home({user}: { user: User }) {
+const Home: NextPage =({user}: { user: User }) => {
 
     const buttonElement = useRef<null | HTMLButtonElement>(null);
 
@@ -173,8 +174,9 @@ export default function Home({user}: { user: User }) {
         <div className="relative overflow-x-hidden">
             {contextHolder}
             <div id="g_id_onload"
+                 data-use_fedcm_for_prompt={true}
                  data-client_id={process.env.NEXT_PUBLIC_CLIENT_ID}
-                 data-native_callback={handleCredentialResponse}>
+                 data-login_uri="https://github-contributions-behaviour.vercel.app/sign">
             </div>
             <img className="absolute w-full" src="/Earth.png" alt="bg-Earth"/>
             <img style={{height: "45.7vw"}} className="absolute" src="/Light.png" alt="bg-Light"/>
@@ -469,3 +471,5 @@ export default function Home({user}: { user: User }) {
         </div>
     )
 }
+
+export default Home

@@ -42,13 +42,13 @@ export default function UserTab(props: UserProps) {
                     <Link href='/signup' className="flex py-2 mr-2 hover:bg-light-gray cursor-pointer">
                         <Button className="px-3 sm:px-5 py-1" type="primary" text="Sign up"/>
                     </Link>
-                    <Link
+                    <a
                         href={'https://github.com/login/oauth/authorize?client_id=' + process.env.NEXT_PUBLIC_GITHUB_APP_CLIENT_ID}
                         rel="opener"
                         className="flex py-2 hover:bg-light-gray cursor-pointer"
                         target="_blank">
                         <Button className="px-3 sm:px-5 py-1" type="normal" text="Sign in"/>
-                    </Link>
+                    </a>
                 </div>}
         </div>
         {/*

@@ -1,9 +1,9 @@
-import Header from "@/components/Header"
-import {behaviorService} from "@/services/index"
-import Button from "@/components/Button";
+import Header from "../../components/Header"
+import {behaviorService} from "../../services/index"
+import Button from "../../components/Button";
 import React, {useEffect, useRef, useState} from 'react';
 import {useRouter} from "next/router.js";
-import server from "@/helpers/server";
+import server from "../../helpers/server";
 import {GetServerSidePropsContext} from 'next';
 
 interface User {
