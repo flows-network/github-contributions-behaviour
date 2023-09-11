@@ -18,7 +18,13 @@ async function sign(code: string): Promise<boolean> {
 }
 
 async function signByGoogle(code: string): Promise<boolean> {
-    let result = await fetchWrapper.post(`/api/signByGoogle`,code);
+    let result = await fetch(`/api/signByGoogle`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({code})
+    });
     if (result.status === 200) {
         userSubject.next(await result.json());
         return true;
