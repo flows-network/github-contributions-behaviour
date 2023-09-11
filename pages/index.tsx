@@ -160,23 +160,13 @@ const Home: NextPage =({user}: { user: User }) => {
         console.log("Email: " + responsePayload.email);
     }
 
-    function parseJwt(token: string) {
-        const base64Url = token.split('.')[1];
-        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
-            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-        }).join(''));
-
-        return JSON.parse(jsonPayload);
-    }
-
     return (
         <div className="relative overflow-x-hidden">
             {contextHolder}
             <div id="g_id_onload"
                  data-use_fedcm_for_prompt={true}
                  data-client_id={process.env.NEXT_PUBLIC_CLIENT_ID}
-                 data-login_uri="https://github-contributions-behaviour.vercel.app/sign">
+                 data-login_uri="https://github-contributions-behaviour.vercel.app/authorized">
             </div>
             <img className="absolute w-full" src="/Earth.png" alt="bg-Earth"/>
             <img style={{height: "45.7vw"}} className="absolute" src="/Light.png" alt="bg-Light"/>

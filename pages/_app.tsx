@@ -4,18 +4,22 @@ import {useRouter} from "next/router";
 import Head from "next/head";
 import Script from "next/script";
 import {accountService} from "../services/index";
-import type { AppProps } from 'next/app'
+import type {AppProps} from 'next/app'
 
 type myWindow = Window & {
-    sign?: (code: string) => Promise<void>;
+    sign?: (code: string, origin: string) => Promise<void>;
 };
 
 export default function MyApp({Component, pageProps}: AppProps) {
     const router = useRouter();
 
     useEffect(() => {
-        (window as myWindow).sign = async function (code: string) {
-            await accountService.sign(code);
+        (window as myWindow).sign = async function (code: string, origin: string) {
+            if(origin==="GitHub"){
+                await accountService.sign(code);
+            }else {
+                await accountService.signByGoogle(code);
+            }
             router.push('/');
         };
     }, []);
