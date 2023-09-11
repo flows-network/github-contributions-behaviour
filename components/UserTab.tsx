@@ -53,7 +53,7 @@ export default function UserTab(props: UserProps) {
                     <a
                         href={'https://github.com/login/oauth/authorize?client_id=' + process.env.NEXT_PUBLIC_GITHUB_APP_CLIENT_ID}
                         rel="opener"
-                        className="flex pl-2 hover:bg-light-gray cursor-pointer"
+                        className="flex hover:bg-light-gray cursor-pointer"
                         target="_blank">
                         <Button className="px-3 sm:px-5 py-1.5" type="normal" text="Sign by GitHub"/>
                     </a>

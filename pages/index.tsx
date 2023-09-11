@@ -222,7 +222,7 @@ const Home: NextPage =({user}: { user: User }) => {
                                     <div style={{fontFamily: 'Oxanium, sans-serif', fontSize: "26px"}}
                                          className="flex items-center tracking-wider text-center my-5">
                                         {thisWeek}
-                                        <Button className="ml-2 text-2xl px-4 py-2" type="normal" text="Copy Share Link" onClick={copy}/>
+                                        <Button className="ml-2 text-2xl px-4 py-2" type="primary" text="Copy Share Link" onClick={copy}/>
                                     </div>
                                     <img style={{width: "45vh"}} className="rounded-2xl"
                                          src="/LineDown.svg"
