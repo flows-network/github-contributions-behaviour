@@ -140,26 +140,6 @@ const Home: NextPage =({user}: { user: User }) => {
         }
     }
 
-    interface ResponsePayload {
-        sub: string;
-        name: string;
-        given_name: string;
-        family_name: string;
-        picture: string;
-        email: string;
-    }
-
-    function handleCredentialResponse(response: { credential: string }) {
-        const responsePayload = parseJwt(response.credential);
-        console.log("responsePayload", responsePayload);
-        console.log("ID: " + responsePayload.sub);
-        console.log("Full Name: " + responsePayload.name);
-        console.log("Given Name: " + responsePayload.given_name);
-        console.log("Family Name: " + responsePayload.family_name);
-        console.log("Image URL: " + responsePayload.picture);
-        console.log("Email: " + responsePayload.email);
-    }
-
     return (
         <div className="relative overflow-x-hidden">
             {contextHolder}
