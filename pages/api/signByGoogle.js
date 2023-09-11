@@ -19,7 +19,6 @@ export default async function (req, res) {
     const access = parseJwt(req.body.credential)
 
     if (access && access.sub) {
-
         let u = {user_id: access.sub, username: access.name, avatar: access.picture, email: access.email}
         //format user data
         let account = await db.Account.findOne({user_id: u.user_id})
