@@ -106,13 +106,11 @@ const Home: NextPage =({user}: { user: User }) => {
 
     useEffect(() => {
         const currentDate = new Date(); // 获取当前日期
-        const currentDayOfWeek = currentDate.getDay(); // 获取当前星期几的索引（0-6，0 表示星期日，1 表示星期一，6 表示星期六）
 
         const startDate = new Date(currentDate); // 创建开始日期的副本
-        startDate.setDate(currentDate.getDate() - currentDayOfWeek + 1); // 设置开始日期为本周一
+        startDate.setDate(startDate.getDate() - 7);
 
-        const endDate = new Date(currentDate); // 创建结束日期的副本
-        endDate.setDate(currentDate.getDate() + (7 - currentDayOfWeek)); // 设置结束日期为本周日
+        const endDate = new Date(currentDate); // 创建开始日期的副本
 
         const startDateString = startDate.toLocaleDateString(); // 获取开始日期的字符串
         const endDateString = endDate.toLocaleDateString(); // 获取结束日期的字符串
@@ -214,16 +212,18 @@ const Home: NextPage =({user}: { user: User }) => {
                     ChatGPT analyze your contribution
                 </div>
                 <div className="flex justify-center">
-                    <div style={progress === 0 && !pageData ? {width: "76vw"} : {width: "56.2vh", height: "100vh"}}
+                    <div style={progress === 0 && !pageData ? {width: "76vw"} : {width: "56.2vh", height:"max-content",backgroundSize: "cover",backgroundImage: "url(/h5Bg.svg)"}}
                          className={"bg-grayBg border border-white mt-10 rounded-2xl " + (progress === 0 && !pageData ? "py-16 px-40" : "")}>
                         {
-                            (pageData && progress >= 100) ? <div className="relative">
-                                <div style={{width: "56.2vh"}} className="absolute z-50 flex flex-col items-center">
+                            (pageData && progress >= 100) ? <div style={{width: "56.2vh",height:"max-content"}} className="z-50 flex flex-col items-center">
                                     <img style={{width: "45vh"}} className="mt-12 rounded-2xl"
                                          src="/LineUp.svg"
                                          alt="indie hacker image"/>
                                     <div style={{fontFamily: 'Oxanium, sans-serif', fontSize: "26px"}}
-                                         className="tracking-wider text-center my-5">{thisWeek}</div>
+                                         className="flex items-center tracking-wider text-center my-5">
+                                        {thisWeek}
+                                        <Button className="ml-2 text-2xl px-4 py-2" type="normal" text="Copy Share Link" onClick={copy}/>
+                                    </div>
                                     <img style={{width: "45vh"}} className="rounded-2xl"
                                          src="/LineDown.svg"
                                          alt="indie hacker image"/>
@@ -233,12 +233,10 @@ const Home: NextPage =({user}: { user: User }) => {
                                         textShadow: " 0px 4px 2px #9955FF"
                                     }}>{`${id}'s contribution to ${owner}/${repo} project`}</div>
                                     <div></div>
-                                    <Button text="copy" onClick={copy}/>
-                                    <div className="relative p-10 mt-14 whitespace-pre-line text-3xl break-normal"
+                                    <div className="relative p-10 mt-10 whitespace-pre-line text-3xl break-normal"
                                          style={{
                                              borderRadius: "2.5rem",
                                              border: "1px solid rgb(107,57,173)",
-                                             height: "25vh",
                                              background: "rgba(153, 85, 255, 0.2)",
                                              hyphens: "auto",
                                              wordWrap: "break-word",
@@ -256,7 +254,6 @@ const Home: NextPage =({user}: { user: User }) => {
                                              borderRadius: "2.5rem",
                                              border: "1px solid rgb(107,57,173)",
                                              background: "rgba(153, 85, 255, 0.2)",
-                                             height: "25vh",
                                              hyphens: "auto",
                                              wordWrap: "break-word",
                                              width: "47.2vh"
@@ -268,7 +265,7 @@ const Home: NextPage =({user}: { user: User }) => {
                                         <div className="overflow-auto h-full"
                                              dangerouslySetInnerHTML={{__html: afterText}}/>
                                     </div>
-                                    <div className="flex mt-12 w-full justify-around">
+                                    <div className="flex my-12 w-full justify-around">
                                         <Button onClick={() => {
                                             setProgress(0)
                                             setPageData("")
@@ -293,11 +290,7 @@ const Home: NextPage =({user}: { user: User }) => {
                                             </TwitterShareButton>
                                         </div>
                                     </div>
-                                </div>
-                                <img style={{width: "56.2vh"}} className="absolute rounded-2xl"
-                                     src="/h5Bg.svg"
-                                     alt="indie hacker image"/>
-                            </div> : progress === 0 ? (<div>
+                                </div> : progress === 0 ? (<div>
                                 <div className="text-sm font-normal">GitHub ID</div>
                                 <input placeholder="GitHub ID"
                                        value={id}
@@ -330,8 +323,7 @@ const Home: NextPage =({user}: { user: User }) => {
                                         await fetchData()
                                     }} className="font-bold text-xl py-4 px-14 rounded-lg" text="Submit"/>
                                 </div>
-                            </div>) : <div className="relative">
-                                <div className="w-full z-50 h-full absolute flex flex-col justify-between items-center">
+                            </div>) : <div style={{backgroundSize: "cover",backgroundImage: "url(/h5Bg.svg)"}} className="w-full z-50 h-screen flex flex-col justify-between items-center">
                                     <div className="w-full flex flex-col items-center">
                                         <img style={{width: "71.7%"}} className="pt-20 rounded-2xl" src="/GitHubCat.svg"
                                              alt="indie hacker image"/>
@@ -364,13 +356,9 @@ const Home: NextPage =({user}: { user: User }) => {
                                             </div>
                                         </div>
                                         <div
-                                            className="text-main pt-6 text-center">{dots ? "Analyzing" + dots : "Loading..."}</div>
+                                            className="text-main py-6 text-center">{dots ? "Analyzing" + dots : "Loading..."}</div>
                                     </div>
                                 </div>
-                                <img style={{width: "56.2vh", height: "100vh"}} className="absolute rounded-2xl"
-                                     src="/h5Bg.svg"
-                                     alt="indie hacker image"/>
-                            </div>
                         }
                     </div>
                 </div>

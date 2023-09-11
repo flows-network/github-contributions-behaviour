@@ -101,13 +101,11 @@ export default function Home({user}: { user: User }) {
 
     useEffect(() => {
         const currentDate = new Date(); // 获取当前日期
-        const currentDayOfWeek = currentDate.getDay(); // 获取当前星期几的索引（0-6，0 表示星期日，1 表示星期一，6 表示星期六）
 
         const startDate = new Date(currentDate); // 创建开始日期的副本
-        startDate.setDate(currentDate.getDate() - currentDayOfWeek + 1); // 设置开始日期为本周一
+        startDate.setDate(startDate.getDate() - 7);
 
-        const endDate = new Date(currentDate); // 创建结束日期的副本
-        endDate.setDate(currentDate.getDate() + (7 - currentDayOfWeek)); // 设置结束日期为本周日
+        const endDate = new Date(currentDate); // 创建开始日期的副本
 
         const startDateString = startDate.toLocaleDateString(); // 获取开始日期的字符串
         const endDateString = endDate.toLocaleDateString(); // 获取结束日期的字符串
@@ -208,11 +206,10 @@ export default function Home({user}: { user: User }) {
                 </div>
                 <div className="flex justify-center">
                     <div ref={scrollRef}
-                         style={progress === 0 && !pageData ? {width: "76vw"} : {width: "56.2vh", height: "100vh"}}
+                         style={progress === 0 && !pageData ? {width: "76vw"} : {width: "56.2vh", height:"max-content",backgroundSize: "cover",backgroundImage: "url(/h5Bg.svg)"}}
                          className={"bg-grayBg border border-white mt-10 rounded-2xl " + (progress === 0 && !pageData ? "py-16 px-40" : "")}>
                         {
-                            (pageData && progress >= 100) ? <div className="relative">
-                                <div style={{width: "56.2vh"}} className="absolute z-50 flex flex-col items-center">
+                            (pageData && progress >= 100) ? <div style={{width: "56.2vh",height:"max-content"}} className="z-50 flex flex-col items-center">
                                     <img style={{width: "45vh"}} className="mt-12 rounded-2xl"
                                          src="/LineUp.svg"
                                          alt="indie hacker image"/>
@@ -231,7 +228,6 @@ export default function Home({user}: { user: User }) {
                                              borderRadius: "2.5rem",
                                              border: "1px solid rgb(107,57,173)",
                                              background: "rgba(153, 85, 255, 0.2)",
-                                             height: "25vh",
                                              hyphens: "auto",
                                              wordWrap: "break-word",
                                              width: "47.2vh"
@@ -248,7 +244,6 @@ export default function Home({user}: { user: User }) {
                                              borderRadius: "2.5rem",
                                              border: "1px solid rgb(107,57,173)",
                                              background: "rgba(153, 85, 255, 0.2)",
-                                             height: "25vh",
                                              hyphens: "auto",
                                              wordWrap: "break-word",
                                              width: "47.2vh"
@@ -260,7 +255,7 @@ export default function Home({user}: { user: User }) {
                                         <div className="overflow-auto h-full"
                                              dangerouslySetInnerHTML={{__html: afterText}}/>
                                     </div>
-                                    <div className="flex mt-12 w-full justify-center">
+                                    <div className="flex my-12 w-full justify-center">
                                         <Button onClick={() => {
                                             setProgress(0)
                                             setPageData("")
@@ -272,11 +267,7 @@ export default function Home({user}: { user: User }) {
                                         }} className="bg-grayBg rounded-2xl py-5 px-8 text-3xl" text="Make you own"
                                                 type="normal"/>
                                     </div>
-                                </div>
-                                <img style={{width: "56.2vh"}} className="absolute rounded-2xl"
-                                     src="/h5Bg.svg"
-                                     alt="indie hacker image"/>
-                            </div> : progress === 0 ? (<div>
+                                </div> : progress === 0 ? (<div>
                                 <div className="text-sm font-normal">GitHub ID</div>
                                 <input placeholder="GitHub ID"
                                        value={id}
@@ -309,46 +300,41 @@ export default function Home({user}: { user: User }) {
                                         await fetchData()
                                     }} className="font-bold text-xl py-4 px-14 rounded-lg" text="Submit"/>
                                 </div>
-                            </div>) : <div className="relative">
-                                <div className="w-full z-50 h-full absolute flex flex-col justify-between items-center">
-                                    <div className="w-full flex flex-col items-center">
-                                        <img style={{width: "71.7%"}} className="pt-20 rounded-2xl" src="/GitHubCat.svg"
-                                             alt="indie hacker image"/>
-                                        <img style={{width: "71.7%"}} className="-mt-40 rounded-2xl"
-                                             src="/GitHubBehaviorText.svg"
-                                             alt="indie hacker image"/>
-                                        <img style={{width: "65%"}} className="mt-2 rounded-2xl"
-                                             src="/BehaviorText.svg"
-                                             alt="indie hacker image"/>
-                                    </div>
-                                    <div className="mt-24 w-5/6 flex flex-col items-center justify-end text-2xl">
-                                        <div style={{fontSize: "1.625rem", fontFamily: 'Oxanium, sans-serif'}}
-                                             className="text-center">Generated by GPT4
-                                        </div>
-                                        <div style={{height: "3.8vh"}} className="mt-12 w-full relative">
-                                            <div style={{borderRadius: "1.9vh", height: "3.8vh"}}
-                                                 className="overflow-hidden absolute w-full border border-white">
-                                                <div className="absolute" style={{
-                                                    borderRadius: "1.9vh",
-                                                    width: `${progress}%`,
-                                                    height: "3.8vh",
-                                                    background: "linear-gradient(270deg, rgba(223, 24, 255, 0.85) 0%, rgba(119, 85, 255, 0) 60%, rgba(223, 24, 255, 0) 60%)"
-                                                }}/>
-                                                <div style={{
-                                                    borderRadius: "1.9vh",
-                                                    width: `${progress}%`,
-                                                    height: "3.8vh",
-                                                    backgroundImage: "url(/Progress.svg)"
-                                                }}/>
-                                            </div>
-                                        </div>
-                                        <div
-                                            className="text-main pt-6 text-center">{dots ? "Analyzing" + dots : "Loading..."}</div>
-                                    </div>
+                            </div>) : <div className="w-full z-50 h-screen flex flex-col justify-between items-center">
+                                <div className="w-full flex flex-col items-center">
+                                    <img style={{width: "71.7%"}} className="pt-20 rounded-2xl" src="/GitHubCat.svg"
+                                         alt="indie hacker image"/>
+                                    <img style={{width: "71.7%"}} className="-mt-40 rounded-2xl"
+                                         src="/GitHubBehaviorText.svg"
+                                         alt="indie hacker image"/>
+                                    <img style={{width: "65%"}} className="mt-2 rounded-2xl"
+                                         src="/BehaviorText.svg"
+                                         alt="indie hacker image"/>
                                 </div>
-                                <img style={{width: "56.2vh", height: "100vh"}} className="absolute rounded-2xl"
-                                     src="/h5Bg.svg"
-                                     alt="indie hacker image"/>
+                                <div className="mt-24 w-5/6 flex flex-col items-center justify-end text-2xl">
+                                    <div style={{fontSize: "1.625rem", fontFamily: 'Oxanium, sans-serif'}}
+                                         className="text-center">Generated by GPT4
+                                    </div>
+                                    <div style={{height: "3.8vh"}} className="mt-12 w-full relative">
+                                        <div style={{borderRadius: "1.9vh", height: "3.8vh"}}
+                                             className="overflow-hidden absolute w-full border border-white">
+                                            <div className="absolute" style={{
+                                                borderRadius: "1.9vh",
+                                                width: `${progress}%`,
+                                                height: "3.8vh",
+                                                background: "linear-gradient(270deg, rgba(223, 24, 255, 0.85) 0%, rgba(119, 85, 255, 0) 60%, rgba(223, 24, 255, 0) 60%)"
+                                            }}/>
+                                            <div style={{
+                                                borderRadius: "1.9vh",
+                                                width: `${progress}%`,
+                                                height: "3.8vh",
+                                                backgroundImage: "url(/Progress.svg)"
+                                            }}/>
+                                        </div>
+                                    </div>
+                                    <div
+                                        className="text-main py-6 text-center">{dots ? "Analyzing" + dots : "Loading..."}</div>
+                                </div>
                             </div>
                         }
                     </div>
