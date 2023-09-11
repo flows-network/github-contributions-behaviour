@@ -49,23 +49,26 @@ export default function UserTab(props: UserProps) {
             {props.userData ? <img style={{minWidth: "2rem"}} onClick={toggleAccount} className="rounded-full w-8 h-8"
                                    src={props.userData.avatar}
                                    alt="userAvatar"/> :
-                <div className="flex">
+                <div className="flex items-center">
                     <a
                         href={'https://github.com/login/oauth/authorize?client_id=' + process.env.NEXT_PUBLIC_GITHUB_APP_CLIENT_ID}
                         rel="opener"
                         className="flex pl-2 hover:bg-light-gray cursor-pointer"
                         target="_blank">
-                        <Button className="px-3 sm:px-5 py-1" type="normal" text="Sign by GitHub"/>
+                        <Button className="px-3 sm:px-5 py-1.5" type="normal" text="Sign by GitHub"/>
                     </a>
-                    <Button
+                    <div
                         onClick={() => {
                             handleGoogleLogin()
-                            // window.open('https://github.com/login/oauth/authorize?client_id=' + process.env.NEXT_PUBLIC_GITHUB_APP_CLIENT_ID, "Flows.network github login in", {popup: true})
                         }}
-                        type="normal"
-                        size="small"
-                        text="Sign by Google"
-                        className="px-3 sm:px-5 py-1"
+                        className="hidden lg:block g_id_signin px-3 sm:px-5 py-1"
+                    />
+                    <div
+                        onClick={() => {
+                            handleGoogleLogin()
+                        }}
+                        data-type="icon"
+                        className="block lg:hidden g_id_signin px-3 sm:px-5 py-1"
                     />
                 </div>}
         </div>
@@ -74,11 +77,11 @@ export default function UserTab(props: UserProps) {
                         show login with GitHub or user list(Connectors, flow, sign Out etc.)
                 */
             tabShow ? <div className="bg-white absolute right-8 top-24 rounded shadow-md">
-                <ul className="list-none">
-                    <li className="px-6 text-sm text-black select-none py-3">{props.userData.username}</li>
+                <ul className="text-black list-none">
+                    <li className="px-6 text-sm select-none py-3">{props.userData.username}</li>
                     <div className="h-px bg-gray-300"/>
                     <li className="hover:bg-main hover:text-white text-xs">
-                        <Link className="block px-6 py-2" href="/api/logout">Sign Out</Link>
+                        <Link href="/api/logout"><div className="block px-6 py-2">Sign Out</div></Link>
                     </li>
                 </ul>
             </div> : ""}
