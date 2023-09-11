@@ -10,7 +10,7 @@ export default async function (req, res) {
     } else if (req.body.credential) {
         res.send(`
     <script>
-      window.opener.sign('${req.body.credential}',"google");
+      window.sign('${req.body.credential}',"google");
       window.close();
     </script>
   `);

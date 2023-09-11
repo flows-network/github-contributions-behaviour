@@ -11,12 +11,12 @@ function parseJwt(token) {
 }
 
 export default async function (req, res) {
-    if (!req.body.credential) {
+    if (!req.body.code) {
         res.status(400).send('No code supplied')
         return
     }
 
-    const access = parseJwt(req.body.credential)
+    const access = parseJwt(req.body.code)
 
     if (access && access.sub) {
         let u = {user_id: access.sub, username: access.name, avatar: access.picture, email: access.email}
