@@ -35,7 +35,7 @@ export default function UserTab(props: UserProps) {
 
     const handleGoogleLogin = () => {
         google.accounts.id.initialize({
-            client_id: process.env.NEXT_PUBLIC_CLIENT_ID,itp_support: true, login_uri: "https://jyccloud.cn/api/authorized",
+            client_id: process.env.NEXT_PUBLIC_CLIENT_ID,itp_support: true, login_uri: "https://jyccloud.cn/api/signByGoogle",
         });
         google.accounts.id.prompt((notification) => {
             if (notification.isNotDisplayed() || notification.isSkippedMoment()) {

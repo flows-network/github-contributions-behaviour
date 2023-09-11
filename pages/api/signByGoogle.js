@@ -46,7 +46,7 @@ export default async function (req, res) {
                 if (err) {
                     return res.status(500).send('Service unavailable')
                 }
-                return res.send(u)
+                return res.redirect(302, '/');
             })
         })
     } else {
