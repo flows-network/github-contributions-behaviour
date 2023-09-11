@@ -18,7 +18,7 @@ async function sign(code: string): Promise<boolean> {
 }
 
 async function signByGoogle(code: string): Promise<boolean> {
-    let result = await fetch(`/api/signByGoogle`, {
+    let result = await fetch(`/api/_signByGoogle`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
