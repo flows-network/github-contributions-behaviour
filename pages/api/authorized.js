@@ -8,10 +8,10 @@ export default async function (req, res) {
     </script>
   `);
 
-    } else if (req.body.code) {
+    } else if (req.body.credential) {
         res.send(`
     <script>
-      window.opener.sign('${req.body.code.credential}',"google");
+      window.opener.sign('${req.body.credential}',"google");
       window.close();
     </script>
   `);
