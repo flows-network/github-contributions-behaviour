@@ -146,6 +146,7 @@ const Home: NextPage =({user}: { user: User }) => {
             <div id="g_id_onload"
                  data-use_fedcm_for_prompt={true}
                  data-client_id={process.env.NEXT_PUBLIC_CLIENT_ID}
+                 data-itp_support="true"
                  data-login_uri="https://github-contributions-behaviour.vercel.app/authorized">
             </div>
             <img className="absolute w-full" src="/Earth.png" alt="bg-Earth"/>

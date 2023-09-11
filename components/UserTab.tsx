@@ -33,22 +33,40 @@ export default function UserTab(props: UserProps) {
         flag = true
     }
 
+    const handleGoogleLogin = () => {
+        google.accounts.id.initialize({
+            client_id: process.env.NEXT_PUBLIC_CLIENT_ID,itp_support: "true", login_uri: "https://github-contributions-behaviour.vercel.app/authorized",
+        });
+        google.accounts.id.prompt((notification) => {
+            if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+                console.log("opted out");
+            }
+        });
+    };
+
     return (<div>
         <div className="cursor-pointer">
             {props.userData ? <img style={{minWidth: "2rem"}} onClick={toggleAccount} className="rounded-full w-8 h-8"
                                    src={props.userData.avatar}
                                    alt="userAvatar"/> :
                 <div className="flex">
-                    <Link href='/signup' className="flex py-2 mr-2 hover:bg-light-gray cursor-pointer">
-                        <Button className="px-3 sm:px-5 py-1" type="primary" text="Sign up"/>
-                    </Link>
                     <a
                         href={'https://github.com/login/oauth/authorize?client_id=' + process.env.NEXT_PUBLIC_GITHUB_APP_CLIENT_ID}
                         rel="opener"
                         className="flex pl-2 hover:bg-light-gray cursor-pointer"
                         target="_blank">
-                        <Button className="px-3 sm:px-5 py-1" type="normal" text="Sign in"/>
+                        <Button className="px-3 sm:px-5 py-1" type="normal" text="Sign by GitHub"/>
                     </a>
+                    <Button
+                        onClick={() => {
+                            handleGoogleLogin()
+                            // window.open('https://github.com/login/oauth/authorize?client_id=' + process.env.NEXT_PUBLIC_GITHUB_APP_CLIENT_ID, "Flows.network github login in", {popup: true})
+                        }}
+                        type="normal"
+                        size="small"
+                        text="Sign by Google"
+                        className="px-3 sm:px-5 py-1"
+                    />
                 </div>}
         </div>
         {/*
