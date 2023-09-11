@@ -143,11 +143,11 @@ const Home: NextPage =({user}: { user: User }) => {
     return (
         <div className="relative overflow-x-hidden">
             {contextHolder}
-            <div id="g_id_onload"
-                 data-client_id={process.env.NEXT_PUBLIC_CLIENT_ID}
-                 data-itp_support={true}
-                 data-login_uri="https://jyccloud.cn/api/signByGoogle">
-            </div>
+            {user ? "" : <div id="g_id_onload"
+                  data-client_id={process.env.NEXT_PUBLIC_CLIENT_ID}
+                  data-itp_support={true}
+                  data-login_uri="https://jyccloud.cn/api/signByGoogle">
+            </div>}
             <img className="absolute w-full" src="/Earth.png" alt="bg-Earth"/>
             <img style={{height: "45.7vw"}} className="absolute" src="/Light.png" alt="bg-Light"/>
             <div className="relative z-50">
