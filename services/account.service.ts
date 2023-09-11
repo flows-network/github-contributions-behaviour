@@ -25,6 +25,7 @@ async function signByGoogle(code: string): Promise<boolean> {
         },
         body: JSON.stringify({code})
     });
+    console.log(result.status)
     if (result.status === 200) {
         userSubject.next(await result.json());
         return true;

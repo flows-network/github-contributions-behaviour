@@ -18,18 +18,11 @@ export default async function (req, res) {
 
     const access = parseJwt(req.body.code)
 
-    console.log("ID: " + access.sub);
-    console.log("Full Name: " + access.name);
-    console.log("Given Name: " + access.given_name);
-    console.log("Family Name: " + access.family_name);
-    console.log("Image URL: " + access.picture);
-    console.log("Email: " + access.email);
-
     if (access && access.sub) {
 
         let u = {user_id: access.sub, username: access.name, avatar: access.picture, email: access.email}
         //format user data
-        let account = await db.Account.findOne({id: u.id})
+        let account = await db.Account.findOne({user_id: u.user_id})
         if (!account) {
             //create account object
             account = new db.Account({

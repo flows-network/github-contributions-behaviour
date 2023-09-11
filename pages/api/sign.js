@@ -33,7 +33,7 @@ export default async function (req, res) {
             or visit https://docs.github.com/en/developers/apps/building-github-apps/identifying-and-authorizing-users-for-github-apps
          */
         const {
-            id: github_id,
+            github_id: github_id,
             name: github_name,
             login: username,
             avatar_url: avatar,
@@ -43,11 +43,11 @@ export default async function (req, res) {
 
         u = {github_id, github_name, username, avatar, github_url, email}
         //format user data
-        let account = await db.Account.findOne({github_id: u.github_id})
+        let account = await db.Account.findOne({user_id: u.github_id})
         if (!account) {
             //create account object
             account = new db.Account({
-                github_id: u.github_id,
+                user_id: u.github_id,
                 github_name: u.github_name,
                 username: u.username,
                 avatar: u.avatar,
