@@ -57,7 +57,7 @@ export default function UserTab(props: UserProps) {
                 */
             tabShow ? <div className="bg-white absolute right-8 top-24 rounded shadow-md">
                 <ul className="list-none">
-                    <li className="px-6 text-sm select-none py-3">{props.userData.username}</li>
+                    <li className="px-6 text-sm text-black select-none py-3">{props.userData.username}</li>
                     <div className="h-px bg-gray-300"/>
                     <li className="hover:bg-main hover:text-white text-xs">
                         <Link className="block px-6 py-2" href="/api/logout">Sign Out</Link>
