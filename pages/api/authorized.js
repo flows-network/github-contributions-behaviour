@@ -8,13 +8,11 @@ export default async function (req, res) {
       window.close();
     </script>
   `);
-
     } else if (req.body) {
-        const params = querystring.parse(req.body);
-        if (params.credential) {
+        if (req.body.credential) {
             res.send(`
     <script>
-      window.opener.sign('${params.credential}',"google");
+      window.opener.sign('${req.body.credential}',"google");
       window.close();
     </script>
   `);
