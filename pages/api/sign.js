@@ -18,9 +18,11 @@ export default async function (req, res) {
         let u
         try {
             u = await gh.getUser(access.access_token)
-        }catch (e) {
-            console.log("signError",e)
+        } catch (e) {
+            console.log("signError", e)
         }
+
+        console.log("getUser", u)
 
         /*
             in our program we need the following information:
@@ -33,7 +35,7 @@ export default async function (req, res) {
             or visit https://docs.github.com/en/developers/apps/building-github-apps/identifying-and-authorizing-users-for-github-apps
          */
         const {
-            github_id: github_id,
+            id: github_id,
             name: github_name,
             login: username,
             avatar_url: avatar,
@@ -43,22 +45,32 @@ export default async function (req, res) {
 
         u = {github_id, github_name, username, avatar, github_url, email}
         //format user data
-        let account = await db.Account.findOne({user_id: u.github_id})
+        let account = await db.Account.findOne({email: u.email, github_id: u.github_id})
         if (!account) {
-            //create account object
-            account = new db.Account({
-                user_id: u.github_id,
-                github_name: u.github_name,
-                username: u.username,
-                avatar: u.avatar,
-                github_url: u.github_url,
-                email: u.email
-            })
-            //if don't have this account, add it
-        }else {
-            account["email"] = u.email
+            account = await db.Account.findOne({email: u.email})
+            if (!account) {
+                account = await db.Account.findOne({github_id: u.github_id})
+                if (!account) {
+                    //create account object
+                    account = new db.Account({
+                        github_id: u.github_id,
+                        username: u.username,
+                        avatar: u.avatar,
+                        github_url: u.github_url,
+                        email: u.email
+                    })
+                    //if don't have this account, add it
+                } else if (!account["email"]) {
+                    account["email"] = u.email
+                }
+            } else if (!account["github_id"]) {
+                account["github_id"] = u.github_id
+            }
+
+            await account.save();
         }
-        await account.save();
+
+
         req.session.regenerate(function (err) {
             if (err) {
                 return res.status(500).send('Service unavailable')
