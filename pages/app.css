@@ -7,9 +7,13 @@
         outline: none;
     }
 
-    .py-1.5 {
+    .p-1
+
+.5 {
     padding-top: 0.3rem;
     padding-bottom: 0.3rem;
+    padding-left: 0.3rem;
+    padding-right: 0.3rem;
 }
 
     /* 滚动槽 */
@@ -311,5 +315,66 @@
 
     .link:active {
         color: rgb(37, 99, 235);
+    }
+
+    .small-show {
+        display: block;
+    }
+
+    .small-hidden {
+        display: none;
+    }
+
+    .main-title {
+        font-family: 'Oxanium, sans-serif';
+    }
+
+    .attached-image {
+        width: 42vw;
+    }
+
+    .subscribe-input {
+        width: 46vw;
+    }
+
+    .contribution-body {
+        width: 76vw;
+    }
+
+    .contribution-content {
+        width: 66vw;
+    }
+
+    @media (max-width: 24rem) {
+        .small-show {
+            display: none;
+        }
+
+        .small-hidden {
+            display: block;
+        }
+    }
+
+    @media (max-width: 640px) {
+        .main-title {
+            line-height: 4.5rem;
+        }
+
+        .attached-image {
+            margin-top: 2rem;
+            width: 74vw;
+        }
+
+        .subscribe-input {
+            width: 83vw;
+        }
+
+        .contribution-body {
+            width: 100vw;
+        }
+
+        .contribution-content {
+            width: 90vw;
+        }
     }
 }

@@ -55,20 +55,26 @@ export default function UserTab(props: UserProps) {
                         rel="opener"
                         className="flex hover:bg-light-gray cursor-pointer"
                         target="_blank">
-                        <Button className="px-3 sm:px-5 py-1.5" type="normal" text="Sign by GitHub"/>
+                        <Button className="p-1.5 px-1.5 lg:px-5" type="normal">
+                            <div className="hidden lg:block">
+                                Sign by GitHub
+                            </div>
+                            <img style={{width:"27px"}} className="block lg:hidden" src="/GitHub.svg"
+                                 alt="main image"/>
+                        </Button>
                     </a>
                     <div
                         onClick={() => {
                             handleGoogleLogin()
                         }}
-                        className="hidden lg:block g_id_signin px-3 sm:px-5 py-1"
+                        className="hidden lg:block g_id_signin px-3 lg:px-5 py-1"
                     />
                     <div
                         onClick={() => {
                             handleGoogleLogin()
                         }}
                         data-type="icon"
-                        className="block lg:hidden g_id_signin px-3 sm:px-5 py-1"
+                        className="block lg:hidden g_id_signin px-3 lg:px-5 py-1"
                     />
                 </div>}
         </div>
